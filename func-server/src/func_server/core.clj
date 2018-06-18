@@ -71,14 +71,19 @@
   :args (s/cat :logs logs?))
 
 
+;; TODO add tests, output correct errors
+(defn get-error [e]
+  {:message    (-> e .getMessage)
+   :stacktrace (->> e .getStackTrace vec (map str))})
+
+
 (defn capture-error [f]
   (fn [{:keys [context payload]}]
     (try
       {:context {:error nil}
        :payload (f context payload)}
       (catch Exception e
-        {:context {:error {:message    (-> e .getMessage)
-                           :stackTrace (->> e .getStackTrace vec (map str))}}
+        {:context {:error (get-error e)}
          :payload nil}))))
 
 

@@ -22,7 +22,7 @@
            (-> result
                :context
                :error
-               :stackTrace
+               :stacktrace
                (nth 0))))))
 
 
